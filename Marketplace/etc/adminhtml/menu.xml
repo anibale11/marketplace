@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../../../Magento/Backend/etc/menu.xsd">
+    <menu>
+        <add id="Magentomaster_Marketplace::parent" title="Marketplace" module="Magentomaster_Marketplace" sortOrder="100" resource="Magentomaster_Marketplace::parent"/>
+		<add id="Magentomaster_Marketplace::orderitems" title="Marketplace Orderitems" module="Magentomaster_Marketplace" sortOrder="20" parent="Magentomaster_Marketplace::parent" action="marketplace/orderitems" resource="Magentomaster_Marketplace::orderitems"/>
+<add id="Magentomaster_Marketplace::vendordetails" title="Marketplace Vendordetails" module="Magentomaster_Marketplace" sortOrder="30" parent="Magentomaster_Marketplace::parent" action="marketplace/vendordetails" resource="Magentomaster_Marketplace::vendordetails"/>
+
+    </menu>
+</config>
