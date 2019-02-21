@@ -16,7 +16,7 @@ class InstallSchema implements InstallSchemaInterface
         $installer->startSetup();
         if (version_compare($context->getVersion(), '1.0.0') < 0){
             $installer->run('create table vendor_order_items (
-                id int NOT NULL,
+                id int NOT NULL autoincrement,
                 sku varchar(50) NOT NULL,
                 amount decimal(12),
                 commision decimal(12),
@@ -30,7 +30,7 @@ class InstallSchema implements InstallSchemaInterface
                 PRIMARY KEY (id)
             )');
             $installer->run('create table vendor_details(
-                id int not null,
+                id int not null autoincrement,
                 total_pending decimal(12),
                 total_invoice decimal(12),
                 total_ship decimal(12),
