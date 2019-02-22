@@ -39,6 +39,7 @@ class InstallSchema implements InstallSchemaInterface
                 total_remaining decimal(12),
                 total_tdr decimal(12),
                 total_commission decimal(12),
+                total_ship_charges decimal(12),
                 seller_id int,
                 PRIMARY KEY(id)
             )');

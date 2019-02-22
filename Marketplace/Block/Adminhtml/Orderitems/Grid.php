@@ -51,8 +51,8 @@ class Grid extends \Magento\Backend\Block\Widget\Grid\Extended
         $this->setId('postGrid');
         $this->setDefaultSort('id');
         $this->setDefaultDir('DESC');
-        $this->setSaveParametersInSession(true);
-        $this->setUseAjax(false);
+        $this->setSaveParametersInSession(false);
+        $this->setUseAjax(true);
         $this->setVarNameFilter('post_filter');
     }
 
@@ -85,22 +85,43 @@ class Grid extends \Magento\Backend\Block\Widget\Grid\Extended
                 'column_css_class' => 'col-id'
             ]
         );
-
-
-		
 				$this->addColumn(
 					'sku',
 					[
 						'header' => __('Product Sku'),
 						'index' => 'sku',
 					]
-				);
-				
+                );
+                
+                $this->addColumn(
+					'order_id',
+					[
+						'header' => __('Order ID'),
+						'index' => 'order_id',
+					]
+                );
+                
+				$this->addColumn(
+					'seller_id',
+					[
+						'header' => __('Seller ID'),
+						'index' => 'seller_id',
+					]
+                );
+                
 				$this->addColumn(
 					'amount',
 					[
 						'header' => __('Product Amount '),
 						'index' => 'amount',
+					]
+				);
+                
+                $this->addColumn(
+					'qty',
+					[
+						'header' => __('Buy Qty'),
+						'index' => 'qty',
 					]
 				);
 				
@@ -110,37 +131,21 @@ class Grid extends \Magento\Backend\Block\Widget\Grid\Extended
 						'header' => __('Commission'),
 						'index' => 'commision',
 					]
-				);
-				
-				$this->addColumn(
-					'qty',
-					[
-						'header' => __('Buy Qty'),
-						'index' => 'qty',
-					]
-				);
-				
-				$this->addColumn(
+                );
+                
+                $this->addColumn(
 					'tdr',
 					[
 						'header' => __('TDR'),
 						'index' => 'tdr',
 					]
-				);
-				
-				$this->addColumn(
-					'order_id',
+                );
+
+                $this->addColumn(
+					'shipment_amount',
 					[
-						'header' => __('Order ID'),
-						'index' => 'order_id',
-					]
-				);
-				
-				$this->addColumn(
-					'seller_id',
-					[
-						'header' => __('Seller ID'),
-						'index' => 'seller_id',
+						'header' => __('Shipment Amount'),
+						'index' => 'shipment_amount',
 					]
 				);
 				
@@ -150,21 +155,21 @@ class Grid extends \Magento\Backend\Block\Widget\Grid\Extended
 						'header' => __('Order Status'),
 						'index' => 'order_status',
 					]
+                );
+                
+				$this->addColumn(
+					'order_date',
+					[
+						'header' => __('Order Date'),
+						'index' => 'order_date',
+					]
 				);
-				
-
-
-		
-
-		
 		   $this->addExportType($this->getUrl('marketplace/*/exportCsv', ['_current' => true]),__('CSV'));
-		   $this->addExportType($this->getUrl('marketplace/*/exportExcel', ['_current' => true]),__('Excel XML'));
 
         $block = $this->getLayout()->getBlock('grid.bottom.links');
         if ($block) {
             $this->setChild('grid.bottom.links', $block);
         }
-
         return parent::_prepareColumns();
     }
 
@@ -189,24 +194,6 @@ class Grid extends \Magento\Backend\Block\Widget\Grid\Extended
         );
 
         $statuses = $this->_status->getOptionArray();
-
-        $this->getMassactionBlock()->addItem(
-            'status',
-            [
-                'label' => __('Change status'),
-                'url' => $this->getUrl('marketplace/*/massStatus', ['_current' => true]),
-                'additional' => [
-                    'visibility' => [
-                        'name' => 'status',
-                        'type' => 'select',
-                        'class' => 'required-entry',
-                        'label' => __('Status'),
-                        'values' => $statuses
-                    ]
-                ]
-            ]
-        );
-
 
         return $this;
     }
