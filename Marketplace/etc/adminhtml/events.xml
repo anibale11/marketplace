@@ -6,11 +6,11 @@
    </event>
 
    <event name="sales_order_shipment_save_after">
-       <observer name="magentomaster_marketplace_observer_updatesellerorder" instance="Magentomaster\Marketplace\Observer\Updatesellerorder" />
+       <observer name="magentomaster_marketplace_observer_updatesellerorder1" instance="Magentomaster\Marketplace\Observer\Updatesellerorder1" />
    </event>
 
-   <event name="marketplace_order_refund">
-       <observer name="magentomaster_marketplace_observer_updatesellerorder" instance="Magentomaster\Marketplace\Observer\Updatesellerorder" />
+   <event name="sales_order_save_after">
+       <observer name="magentomaster_marketplace_observer_updatesellerorder2" instance="Magentomaster\Marketplace\Observer\Updatesellerorder2" />
    </event>
 
 </config>

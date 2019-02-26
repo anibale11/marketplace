@@ -31,12 +31,16 @@ class Refreshstatics extends Command
        
         $this->doUpdate(1,'pending');
         $this->doUpdate(1,'processing');
+        $this->doUpdate(1,'complete');
+        $this->doUpdate(1,'closed');
+        $this->finalUpdate(1);
        
    }
   
    protected function doUpdate($seller_id,$orderstatus){
         $collection = $this->vendorsolditems->create()->getCollection();
         $collection = $collection->addFieldToFilter('seller_id',$seller_id)->addFieldToFilter('order_status',$orderstatus)->getData();
+        
         //sum of required parameters 
         $amount = array_sum(array_map(function($collection) { 
             return $collection['amount']; 
@@ -57,6 +61,12 @@ class Refreshstatics extends Command
             if($orderstatus == 'processing'){
                 $orderstatus = 'invoice';
             }
+            if($orderstatus == 'complete'){
+                $orderstatus = 'ship';
+            }
+            if($orderstatus == 'closed'){
+                $orderstatus = 'creditmemo';
+            }
             $status = 'total_'.$orderstatus;
             $this->vendorsetdetails->setSellerId($seller_id)
                                     ->setData($status,$amount)
@@ -70,8 +80,12 @@ class Refreshstatics extends Command
             if($orderstatus == 'processing'){
                 $orderstatus = 'invoice';
             }
-            //$tdr = $vendordata->getData()[0]['total_tdr']+$tdr;
-            //$com = $vendordata->getData()[0]['total_commission']+$com;
+            if($orderstatus == 'complete'){
+                $orderstatus = 'ship';
+            }
+            if($orderstatus == 'closed'){
+                $orderstatus = 'creditmemo';
+            }
             $status = 'total_'.$orderstatus;
             $data->setData($status,$amount)->setTotalTdr($tdr)->setTotalCommission($com)->setTotalShipCharges($ship)->save();
         }
@@ -80,4 +94,39 @@ class Refreshstatics extends Command
         echo "Following Details are for seller_id 1 and for order status ".$orderstatus."\n";
         echo "Total Amount = ".$amount."\n"."Total Commission = ".$com."\n"."Total tdr = ".$tdr."\n"."Total Shipment = ".$ship."\n";
    }
+    protected function finalUpdate($seller_id){
+        $collection = $this->vendorsolditems->create()->getCollection();
+        $collection = $collection->addFieldToFilter('seller_id',$seller_id)
+                                 ->addFieldToFilter('order_status', array('neq' => 'closed'))
+                                 ->addFieldToFilter('order_status', array('neq' => 'canceled'))
+                                 ->getData();
+        //sum of required parameters 
+        $amount = array_sum(array_map(function($collection) { 
+            return $collection['amount']; 
+        }, $collection));
+        $com = array_sum(array_map(function($collection) { 
+            return $collection['commision']; 
+            }, $collection));
+        $tdr = array_sum(array_map(function($collection) { 
+                return $collection['tdr']; 
+                }, $collection));
+        $ship = array_sum(array_map(function($collection) { 
+                    return $collection['shipment_amount']; 
+                    }, $collection));
+        //ends here
+        //insert and update data of seller
+        $vendordata = $this->vendordetails->create()->getCollection()->addFieldToFilter('seller_id',$seller_id);
+        if(empty($vendordata->getData())){
+            $this->vendorsetdetails->setSellerId($seller_id)
+                                    ->setTotalTdr($tdr)
+                                    ->setTotalRemaining($amount)
+                                    ->setTotalShipCharges($ship)
+                                    ->setTotalCommission($com)
+                                    ->save();
+        }
+        else{
+            $data = $this->vendorsetdetails->load($vendordata->getData()[0]['id']);
+            $data->setTotalTdr($tdr)->setTotalCommission($com)->setTotalShipCharges($ship)->setTotalRemaining($amount)->save();
+        }
+    }
 }
