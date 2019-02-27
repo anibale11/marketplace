@@ -10,9 +10,9 @@ use Magentomaster\Marketplace\Model\Vendordetails;
 
 class Refreshstatics extends Command
 {
-   protected $vendorsolditems;
-   protected $vendordetails;
-   protected $vendorsetdetails;
+        protected $vendorsolditems;
+        protected $vendordetails;
+        protected $vendorsetdetails;
 
    public function __construct(OrderitemsFactory $vendorsolditems, VendordetailsFactory $vendordetails,Vendordetails $vendorsetdetails){
        parent::__construct();
@@ -95,6 +95,7 @@ class Refreshstatics extends Command
         echo "Total Amount = ".$amount."\n"."Total Commission = ".$com."\n"."Total tdr = ".$tdr."\n"."Total Shipment = ".$ship."\n";
    }
     protected function finalUpdate($seller_id){
+
         $collection = $this->vendorsolditems->create()->getCollection();
         $collection = $collection->addFieldToFilter('seller_id',$seller_id)
                                  ->addFieldToFilter('order_status', array('neq' => 'closed'))

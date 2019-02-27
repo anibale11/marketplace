@@ -1,0 +1,13 @@
+<!-- vendor request form for magentomaster marketplace -->
+
+<form  data-mage-init='{"validation":{}}' name="vendor" class="Vendor" action="" method="POST" >
+
+    <div class=""><label class="" form=""><span><?php echo __('Name') ?> </span></label><div class="control"><input data-validate='{"required":true}' type="text" name="name"></div></div>
+    <span><?php echo __('Street Address') ?> </span> <input data-validate='{"required":true}' type="text" name="street_address">
+    <span><?php echo __('City') ?> </span> <input data-validate='{"required":true}' type="text" name="city">
+    <span><?php echo __('Pincode') ?> </span> <input data-validate='{"required":true}' type="text" name="pincode">
+    <span><?php echo __('state') ?> </span> <input data-validate='{"required":true}' type="text" name="state">
+    <span><?php echo __('Country') ?> </span> <input data-validate='{"required":true}' type="text" name="country">
+    <span><?php echo __('Email') ?> </span> <input data-validate='{"required":true,"validate-email":true}' type="email" name="email">
+    <input type="submit" name="Submit" value="Submit">
+</form>

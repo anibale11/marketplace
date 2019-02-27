@@ -43,6 +43,22 @@ class InstallSchema implements InstallSchemaInterface
                 seller_id int,
                 PRIMARY KEY(id)
             )');
+            $installer->run('create table vendors(
+                id int not null auto_increment, 
+                name varchar(100),
+                street_address varchar(150), 
+                city varchar(50),
+                pincode varchar(50), 
+                country varchar(50),
+                email varchar(50), 
+                phoneno varchar(50),
+                created_date DATETIME DEFAULT NOW(),
+                gst_no varchar(50),status int, 
+                comission int, 
+                shop_url varchar(200),
+                bank_details varchar(400),
+                store_name varchar(200), 
+                primary key(id))');
 		}
         $installer->endSetup();
     }

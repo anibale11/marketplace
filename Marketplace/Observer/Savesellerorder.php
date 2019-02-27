@@ -73,19 +73,14 @@ class Savesellerorder implements \Magento\Framework\Event\ObserverInterface
   }
     protected function getCommision($productPriceTaxIncluded,$qty){
       $commission = (float)$this->helper->getGeneralConfig('commission');
-      $commission = ($productPriceTaxIncluded * $qty * $commission)/100;
-      return $commission;
+      $commission = (float)($productPriceTaxIncluded * $qty * $commission)/100;
+      $commission = number_format($commission, 2);
+      return (float)$commission;
     }
     protected function getTdr($commissionvalue){
       $tdr = (float)$this->helper->getGeneralConfig('tdr');
-      $tdr = ($commissionvalue *$tdr)/100;
-      return $tdr; 
-      
-    }
-    protected function getAmount(){
-
-    }
-    protected function sendMail(){
-        
+      $tdr = (float)($commissionvalue *$tdr)/100;
+      $tdr = number_format($tdr, 2);
+      return (float)$tdr; 
     }
 }
