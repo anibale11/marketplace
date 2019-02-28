@@ -1,13 +1,67 @@
 <!-- vendor request form for magentomaster marketplace -->
 
-<form  data-mage-init='{"validation":{}}' name="vendor" class="Vendor" action="" method="POST" >
-
-    <div class=""><label class="" form=""><span><?php echo __('Name') ?> </span></label><div class="control"><input data-validate='{"required":true}' type="text" name="name"></div></div>
-    <span><?php echo __('Street Address') ?> </span> <input data-validate='{"required":true}' type="text" name="street_address">
-    <span><?php echo __('City') ?> </span> <input data-validate='{"required":true}' type="text" name="city">
-    <span><?php echo __('Pincode') ?> </span> <input data-validate='{"required":true}' type="text" name="pincode">
-    <span><?php echo __('state') ?> </span> <input data-validate='{"required":true}' type="text" name="state">
-    <span><?php echo __('Country') ?> </span> <input data-validate='{"required":true}' type="text" name="country">
-    <span><?php echo __('Email') ?> </span> <input data-validate='{"required":true,"validate-email":true}' type="email" name="email">
-    <input type="submit" name="Submit" value="Submit">
+<form  data-mage-init='{"validation":{}}' name="vendor" id="vendor_form" class="Vendor" action="<?php echo $block->getUrl('marketplace/index/post'); ?>" method="POST" >
+     
+<fieldset class="fieldset">
+    <div class="field name required">
+        <div class="control">
+            <input placeholder="<?php echo __('Name *') ?>" name="name" id="name" title="Name" value="" class="input-text" type="text" data-validate="{required:true}" aria-required="true">
+        </div>
+    </div>
+    <div class="field street_address required">
+        <div class="control">
+            <input placeholder="<?php echo __('Street Address*') ?>" name="street_address" id="street_address" title="Street Address" value="" class="input-text" type="text" data-validate="{required:true}" aria-required="true">
+        </div>
+    </div>
+    <div class="field pincode required">
+        <div class="control">
+            <input placeholder="<?php echo __('Pincode*') ?>" name="pincode" id="pincode" title="Pincode" value="" class="input-text" type="text" data-validate="{required:true}" aria-required="true">
+        </div>
+    </div>
+    <div class="field city required">
+        <div class="control">
+            <input placeholder="<?php echo __('City*') ?>" name="city" id="city" title="City" value="" class="input-text" type="text" data-validate="{required:true}" aria-required="true">
+        </div>
+    </div>
+    <div class="field country required">
+        <div class="control">
+            <input placeholder="<?php echo __('Country*') ?>" name="country" id="country" title="Country" value="" class="input-text" type="text" data-validate="{required:true}" aria-required="true">
+        </div>
+    </div>
+    <div class="field email required">
+        <div class="control">
+            <input placeholder="<?php echo __('Email*') ?>" name="email" id="email" title="Email" value="" class="input-text" type="email" data-validate="{required:true}" aria-required="true">
+        </div>
+    </div>
+    <div class="field phoneno required">
+        <div class="control">
+            <input placeholder="<?php echo __('Phone No*') ?>" name="phoneno" id="phoneno" title="Phone No" value="" class="input-text" type="text" data-validate="{required:true}" aria-required="true">
+        </div>
+    </div>
+   
+    <div class="field shopname required">
+        <div class="control">
+            <input placeholder="<?php echo __('Shop Name*') ?>" name="store_name" id="shopname" title="Shop Name" value="" class="input-text" type="text" data-validate="{required:true}" aria-required="true">
+        </div>
+    </div>
+    <div class="field gstno required">
+        <div class="control">
+            <input placeholder="<?php echo __('GST No*') ?>" name="gst_no" id="gstno" title="Gst No" value="" class="input-text" type="text" data-validate="{required:true}" aria-required="true">
+        </div>
+    </div>
+    <div class="actions-toolbar">
+        <div class="primary">
+            <input type="hidden" name="hideit" id="hideit" value="">
+            <button type="submit" title="Submit Form" class="action submit primary">
+                <span><?php echo __('Submit') ?></span>
+            </button>
+        </div>
+	</div>
+</fieldset>
 </form>
+
+<style>
+.actions-toolbar{
+    float:right;
+}
+</style>
