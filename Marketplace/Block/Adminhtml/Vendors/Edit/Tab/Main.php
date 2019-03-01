@@ -16,7 +16,15 @@ class Main extends \Magento\Backend\Block\Widget\Form\Generic implements \Magent
      * @var \Magentomaster\Marketplace\Model\Status
      */
     protected $_status;
+    /**
+     * @var \Magento\Directory\Model\Config\Source\Country
+     */
+    protected $_country;
 
+    /**
+     * @var \Magento\Directory\Model\RegionFactory
+     */
+    protected $_regionFactory;
     /**
      * @param \Magento\Backend\Block\Template\Context $context
      * @param \Magento\Framework\Registry $registry
@@ -30,10 +38,14 @@ class Main extends \Magento\Backend\Block\Widget\Form\Generic implements \Magent
         \Magento\Framework\Data\FormFactory $formFactory,
         \Magento\Store\Model\System\Store $systemStore,
         \Magentomaster\Marketplace\Model\Status $status,
+        \Magento\Directory\Model\Config\Source\Country $_country,
+        \Magento\Directory\Model\RegionFactory $_regionFactory,
         array $data = []
     ) {
         $this->_systemStore = $systemStore;
         $this->_status = $status;
+        $this->_country = $_country;
+        $this->_regionFactory = $_regionFactory;
         parent::__construct($context, $registry, $formFactory, $data);
     }
 
@@ -60,7 +72,11 @@ class Main extends \Magento\Backend\Block\Widget\Form\Generic implements \Magent
         if ($model->getId()) {
             $fieldset->addField('id', 'hidden', ['name' => 'id']);
         }
-
+        
+        //added code for country and region
+        $countries = $this->_country->toOptionArray(true, 'IN');
+        $regionCollection = $this->_regionFactory->create()->getCollection()->addCountryFilter('IN');
+        //added code end here
 		
         $fieldset->addField(
             'name',
@@ -97,14 +113,16 @@ class Main extends \Magento\Backend\Block\Widget\Form\Generic implements \Magent
                 'disabled' => $isElementDisabled
             ]
         );
+
         $fieldset->addField(
             'country',
-            'text',
+            'select',
             [
                 'name' => 'country',
                 'label' => __('Country'),
                 'title' => __('Country'),
-				'required' => true,
+                'required' => true,
+                'values' => $countries,
                 'disabled' => $isElementDisabled
             ]
         );
@@ -150,18 +168,6 @@ class Main extends \Magento\Backend\Block\Widget\Form\Generic implements \Magent
                 'name' => 'gst_no',
                 'label' => __('GST No'),
                 'title' => __('GST No'),
-				
-                'disabled' => $isElementDisabled
-            ]
-        );
-					
-        $fieldset->addField(
-            'status',
-            'text',
-            [
-                'name' => 'status',
-                'label' => __('Status'),
-                'title' => __('Status'),
 				
                 'disabled' => $isElementDisabled
             ]
@@ -214,7 +220,18 @@ class Main extends \Magento\Backend\Block\Widget\Form\Generic implements \Magent
                 'disabled' => $isElementDisabled
             ]
         );
-					
+            
+        $fieldset->addField(
+            'status',
+            'select',
+            [
+                'name' => 'status',
+                'label' => __('Status'),
+                'title' => __('Status'),
+				'values' => array('Disable','Enable'),
+                'disabled' => $isElementDisabled
+            ]
+        );
 
         if (!$model->getId()) {
             $model->setData('is_active', $isElementDisabled ? '0' : '1');

@@ -141,14 +141,6 @@ class Grid extends \Magento\Backend\Block\Widget\Grid\Extended
 				);
 				
 				$this->addColumn(
-					'status',
-					[
-						'header' => __('Status'),
-						'index' => 'status',
-					]
-				);
-				
-				$this->addColumn(
 					'comission',
 					[
 						'header' => __('Vendor Commission'),
@@ -171,36 +163,15 @@ class Grid extends \Magento\Backend\Block\Widget\Grid\Extended
 						'index' => 'store_name',
 					]
 				);
-				
-
-
+				$this->addColumn(
+					'status',
+					[
+						'header' => __('Status'),
+						'index' => 'status',
+					]
+				);
 		
-        //$this->addColumn(
-            //'edit',
-            //[
-                //'header' => __('Edit'),
-                //'type' => 'action',
-                //'getter' => 'getId',
-                //'actions' => [
-                    //[
-                        //'caption' => __('Edit'),
-                        //'url' => [
-                            //'base' => '*/*/edit'
-                        //],
-                        //'field' => 'id'
-                    //]
-                //],
-                //'filter' => false,
-                //'sortable' => false,
-                //'index' => 'stores',
-                //'header_css_class' => 'col-action',
-                //'column_css_class' => 'col-action'
-            //]
-        //);
-		
-
-		
-		   $this->addExportType($this->getUrl('marketplace/*/exportCsv', ['_current' => true]),__('CSV'));
+		$this->addExportType($this->getUrl('marketplace/*/exportCsv', ['_current' => true]),__('CSV'));
 
         $block = $this->getLayout()->getBlock('grid.bottom.links');
         if ($block) {
@@ -216,7 +187,6 @@ class Grid extends \Magento\Backend\Block\Widget\Grid\Extended
      */
     protected function _prepareMassaction()
     {
-
         $this->setMassactionIdField('id');
         //$this->getMassactionBlock()->setTemplate('Magentomaster_Marketplace::vendors/grid/massaction_extended.phtml');
         $this->getMassactionBlock()->setFormFieldName('vendors');
@@ -229,7 +199,6 @@ class Grid extends \Magento\Backend\Block\Widget\Grid\Extended
                 'confirm' => __('Are you sure?')
             ]
         );
-
         $statuses = $this->_status->getOptionArray();
         return $this;
     }
