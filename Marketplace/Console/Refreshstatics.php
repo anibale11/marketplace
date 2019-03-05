@@ -7,18 +7,21 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Magentomaster\Marketplace\Model\OrderitemsFactory;
 use Magentomaster\Marketplace\Model\VendordetailsFactory;
 use Magentomaster\Marketplace\Model\Vendordetails;
+use Magentomaster\Marketplace\Model\VendorsFactory;
 
 class Refreshstatics extends Command
 {
         protected $vendorsolditems;
         protected $vendordetails;
         protected $vendorsetdetails;
+        protected $vendorModel;
 
-   public function __construct(OrderitemsFactory $vendorsolditems, VendordetailsFactory $vendordetails,Vendordetails $vendorsetdetails){
+   public function __construct(OrderitemsFactory $vendorsolditems, VendordetailsFactory $vendordetails,Vendordetails $vendorsetdetails, VendorsFactory $vendorModel){
        parent::__construct();
        $this->vendorsolditems = $vendorsolditems;
        $this->vendordetails = $vendordetails;
        $this->vendorsetdetails = $vendorsetdetails;
+       $this->vendorModel = $vendorModel;
    }
    protected function configure()
    {
@@ -28,13 +31,15 @@ class Refreshstatics extends Command
    }
    protected function execute(InputInterface $input, OutputInterface $output)
    {
-       
-        $this->doUpdate(1,'pending');
-        $this->doUpdate(1,'processing');
-        $this->doUpdate(1,'complete');
-        $this->doUpdate(1,'closed');
-        $this->finalUpdate(1);
-       
+       $vendorCollection = $this->vendorModel->create()->getCollection();
+        foreach($vendorCollection as $data){
+        $this->doUpdate($data->getId(),'pending');
+        $this->doUpdate($data->getId(),'processing');
+        $this->doUpdate($data->getId(),'complete');
+        $this->doUpdate($data->getId(),'closed');
+        $this->finalUpdate($data->getId());
+        echo "*******************************************************************************************************************************\n";  
+        } 
    }
   
    protected function doUpdate($seller_id,$orderstatus){
@@ -91,7 +96,7 @@ class Refreshstatics extends Command
         }
 
         //print data
-        echo "Following Details are for seller_id 1 and for order status ".$orderstatus."\n";
+        echo "Following Details are for seller_id ".$seller_id." and for order status ".$orderstatus."\n";
         echo "Total Amount = ".$amount."\n"."Total Commission = ".$com."\n"."Total tdr = ".$tdr."\n"."Total Shipment = ".$ship."\n";
    }
     protected function finalUpdate($seller_id){

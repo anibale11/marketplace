@@ -4,25 +4,26 @@ namespace Magentomaster\Marketplace\Controller\Index;
 
 use Magentomaster\Marketplace\Model\VendorsFactory;
 use Magento\Framework\Controller\ResultFactory;
+use Magentomaster\Marketplace\Helper\Sender;
 
 class Post extends \Magento\Framework\App\Action\Action
 {
     protected $vendorModel;
     protected $_messageManager;
     protected $resultRedirectFactory;
-    protected $transportBuilder;
+    protected $sender;
 
     public function __construct(\Magento\Framework\App\Action\Context $context,
                                 \Magentomaster\Marketplace\Model\VendorsFactory $vendorModel,
                                 \Magento\Framework\Message\ManagerInterface $messageManager,
                                 ResultFactory $resultRedirectFactory,
-                                \Magento\Framework\Mail\Template\TransportBuilder $transportBuilder
+                                Sender $sender
                                 )
     {
       $this->vendorModel = $vendorModel;
       $this->_messageManager = $messageManager;
       $this->resultRedirectFactory = $resultRedirectFactory;
-      $this->transportBuilder = $transportBuilder;
+      $this->sender = $sender;
       parent::__construct($context);
     }
     public function execute()
@@ -31,7 +32,8 @@ class Post extends \Magento\Framework\App\Action\Action
       try{
         if(!empty($post1)){
           $this->vendorModel->create()->setData($post1)->save();
-          $this->sendMail($post1);
+          $this->sender->sendTransactionalEmail($post1);
+          //$this->sender->sendOrderEmail($post1,'kushaljindal92@gmail.com'); //test mail function
           $this->_messageManager->addSuccess(__("Your request has been submitted. You will be contacted by our executive soon."));
         }
       }
@@ -40,8 +42,5 @@ class Post extends \Magento\Framework\App\Action\Action
         $this->_messageManager->addError(__($e->getMessage()));
       }
       return $this->resultRedirectFactory->create()->setPath('marketplace/index/index');
-    }
-    protected function sendMail($data){
-
     }
 }

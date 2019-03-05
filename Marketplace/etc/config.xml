@@ -7,6 +7,11 @@
                 <sender>general</sender>
                 <email_template>email_section_sendmail_email_template</email_template>
             </sendmail>
+            <order>
+                <enabled>1</enabled>
+                <sender>general</sender>
+                <email_template>email_section_order_email_template</email_template>
+            </order>
         </email_section>
     </default>
 </config>

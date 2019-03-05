@@ -1,6 +1,6 @@
-<!--@subject {{trans "Custom Email template from %store_name" store_name=$store.getFrontendName()}} @-->
+<!--@subject {{trans "Your request for becomming seller has been submitted successfully"}} @-->
 <!--@vars {
-"var message_1":"Custom Message 1",
+"var name":"Test",
 "var message_2":"Custom Message 2"
 } @-->
  
@@ -9,8 +9,13 @@
 <table>
     <tr class="email-info">
          <td>
-            <h1>{{trans "Your Custom Message for email goes here"}}</h1>
+            <h1>{{trans "Your request has been submitted.Our customer executive will contact you. This is order email"}}</h1>
         </td>
+    </tr>
+    <tr class="information">
+        <tr>Your Inforamtion as below</tr>
+        <tr>Name {{var name }}</tr>
+        <tr>Phone No {{var phoneno }}</tr>
     </tr>
 </table>
  

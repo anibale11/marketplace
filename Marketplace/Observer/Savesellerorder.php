@@ -5,6 +5,7 @@ use Magento\Sales\Model\Order;
 use Magento\Catalog\Model\Product;
 use Magentomaster\Marketplace\Model\Orderitems;
 use Magentomaster\Marketplace\Helper\Data;
+use Magentomaster\Marketplace\Helper\Sender;
 
 class Savesellerorder implements \Magento\Framework\Event\ObserverInterface
 {
@@ -12,18 +13,21 @@ class Savesellerorder implements \Magento\Framework\Event\ObserverInterface
   protected $productmodel;
   protected $vendororderitem;
   protected $helper;
+  protected $sender;
 
   public function __construct(
                               Order $ordermodel,
                               Product $productmodel,
                               Orderitems $vendororderitem,
-                              Data $helper
+                              Data $helper,
+                              Sender $sender
                               ) 
   {
     $this->orderModel = $ordermodel;
     $this->productmodel = $productmodel;
     $this->vendororderitem = $vendororderitem;
     $this->helper = $helper;
+    $this->sender = $sender;
   }
 
   public function execute(\Magento\Framework\Event\Observer $observer)
@@ -46,6 +50,7 @@ class Savesellerorder implements \Magento\Framework\Event\ObserverInterface
       //load product model
       $product = $this->productmodel->load($productId);
       $sellerId = $product->getVendorId();
+      $sellerEmail = $product->getSellerEmailId();
       //end here
       $commissionvalue = $this->getCommision($productPriceTaxIncluded,$qty);
       $tdrvalue = $this->getTdr($commissionvalue);
@@ -62,6 +67,8 @@ class Savesellerorder implements \Magento\Framework\Event\ObserverInterface
                              ->setShipmentAmount($orderShippingAmount)
                              ->setOrderDate($createdAt)
                              ->save();
+       //send email
+       $this->sender->sendOrderEmail($orderdata,$sellerEmail);
        }
        catch(Exception $e){
         echo $e->getMessage();

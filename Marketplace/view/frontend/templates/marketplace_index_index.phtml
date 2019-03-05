@@ -1,5 +1,5 @@
 <!-- vendor request form for magentomaster marketplace -->
-
+<?php $countries = $this->getCountries(); ?>
 <form  data-mage-init='{"validation":{}}' name="vendor" id="vendor_form" class="Vendor" action="<?php echo $block->getUrl('marketplace/index/post'); ?>" method="POST" >
      
 <fieldset class="fieldset">
@@ -25,7 +25,12 @@
     </div>
     <div class="field country required">
         <div class="control">
-            <input placeholder="<?php echo __('Country*') ?>" name="country" id="country" title="Country" value="" class="input-text" type="text" data-validate="{required:true}" aria-required="true">
+            <select class="input-select" data-validate="{required:true}" aria-required="true" name="country">
+            <option selected>Please Select Country*</option>
+            <?php foreach($countries as $data){
+                echo "<option value='".$data['value']."'>".$data['label']."</option>";
+            }?>
+            <select>
         </div>
     </div>
     <div class="field email required">

@@ -24,29 +24,23 @@ class Sender extends \Magento\Framework\App\Helper\AbstractHelper
      *
      * @return $this
      */
-    public function sendTransactionalEmail()
+    public function sendTransactionalEmail($data)
     {
         if(!$this->isEnable()) {
             return $this;
         }
- 
-        $email = 'kushal@intellinetsystem.com'; //set receiver mail
- 
+        $email = $data['email']; //set receiver mail
         $this->inlineTranslation->suspend();
-        $storeId = $this->getStoreId();
-        /* email template */
         $template = $this->scopeConfig->getValue(
             self::EMAIL_TEMPLATE,
             \Magento\Store\Model\ScopeInterface::SCOPE_STORE,
-            $storeId
+            $this->getStoreId()
         );
- 
         $vars = [
-            'message_1' => 'CUSTOM MESSAGE STR 1',
-            'message_2' => 'custom message str 2',
+            'name' => $data['name'],
+            'phoneno' => $data['phoneno'],
             'store' => $this->getStore()
         ];
- 
         $transport = $this->_transportBuilder->setTemplateIdentifier(
             $template
         )->setTemplateOptions(
@@ -65,14 +59,63 @@ class Sender extends \Magento\Framework\App\Helper\AbstractHelper
         )->addTo(
             $email
         )
-        ->addBcc(['receiver1@example.com','receiver2@example.com'])
+        //->addBcc(['receiver1@example.com','receiver2@example.com'])
         ->getTransport();
         $transport->sendMessage();
         $this->inlineTranslation->resume();
- 
         return $this;
     }
  
+
+
+    public function sendOrderEmail($data,$email)
+    {
+        if(!$this->isEnable()) {
+            return $this;
+        }
+        $email = $email; //set receiver mail
+        $this->inlineTranslation->suspend();
+        $template = $this->scopeConfig->getValue(
+            'email_section/order/email_template',
+            \Magento\Store\Model\ScopeInterface::SCOPE_STORE,
+            $this->getStoreId()
+        );
+        $vars = [
+            'order' => $data,
+            'store' => $this->getStore()
+        ];
+        $transport = $this->_transportBuilder->setTemplateIdentifier(
+            $template
+        )->setTemplateOptions(
+            [
+                'area' => \Magento\Framework\App\Area::AREA_FRONTEND,
+                'store' => $this->getStoreId()
+            ]
+        )
+        ->setTemplateVars($vars)
+        ->setFrom(
+            $_sender = $this->scopeConfig->getValue(
+                'email_section/sendmail/sender',
+                \Magento\Store\Model\ScopeInterface::SCOPE_STORE,
+                $this->getStoreId()
+            )
+        )->addTo(
+            $email
+        )
+        //->addBcc(['receiver1@example.com','receiver2@example.com'])
+        ->getTransport();
+        $transport->sendMessage();
+        $this->inlineTranslation->resume();
+        return $this;
+    }
+
+
+
+
+
+
+
+
     /**
      * Check Email service is enable or not
      *
