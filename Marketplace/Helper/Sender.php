@@ -68,7 +68,7 @@ class Sender extends \Magento\Framework\App\Helper\AbstractHelper
  
 
 
-    public function sendOrderEmail($data,$email)
+    public function sendOrderEmail($data,$email,$message)
     {
         if(!$this->isEnable()) {
             return $this;
@@ -82,7 +82,8 @@ class Sender extends \Magento\Framework\App\Helper\AbstractHelper
         );
         $vars = [
             'order' => $data,
-            'store' => $this->getStore()
+            'store' => $this->getStore(),
+            'message'=> $message
         ];
         $transport = $this->_transportBuilder->setTemplateIdentifier(
             $template
@@ -108,12 +109,6 @@ class Sender extends \Magento\Framework\App\Helper\AbstractHelper
         $this->inlineTranslation->resume();
         return $this;
     }
-
-
-
-
-
-
 
 
     /**

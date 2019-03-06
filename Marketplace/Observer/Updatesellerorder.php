@@ -6,6 +6,7 @@ use Magento\Catalog\Model\Product;
 use Magentomaster\Marketplace\Model\OrderitemsFactory;
 use Magentomaster\Marketplace\Model\Orderitems;
 use Magentomaster\Marketplace\Helper\Data;
+use Magentomaster\Marketplace\Helper\Sender;
 
 class Updatesellerorder implements \Magento\Framework\Event\ObserverInterface
 {
@@ -14,13 +15,15 @@ class Updatesellerorder implements \Magento\Framework\Event\ObserverInterface
   protected $vendororderitem;
   protected $vendororderiteminsert;
   protected $helper;
+  protected $sender;
 
   public function __construct(
                               Order $ordermodel,
                               Product $productmodel,
                               OrderitemsFactory $vendororderitem,
                               Data $helper,
-                              Orderitems $vendororderiteminsert
+                              Orderitems $vendororderiteminsert,
+                              Sender $sender
                               ) 
   {
     $this->orderModel = $ordermodel;
@@ -28,6 +31,7 @@ class Updatesellerorder implements \Magento\Framework\Event\ObserverInterface
     $this->vendororderitem = $vendororderitem;
     $this->helper = $helper;
     $this->vendororderiteminsert = $vendororderiteminsert;
+    $this->sender = $sender;
   }
 
   public function execute(\Magento\Framework\Event\Observer $observer)
@@ -52,6 +56,7 @@ class Updatesellerorder implements \Magento\Framework\Event\ObserverInterface
        $product = $this->productmodel->load($productId);
        $sku = $product->getSku();
        $sellerId = $product->getVendorId();
+       $sellerEmail = $product->getSellerEmailId();
        $data = $this->vendororderitem->create()->getCollection()
                              ->addFieldToFilter('order_id',$orderid)
                              ->addFieldToFilter('seller_id',$sellerId)
@@ -68,6 +73,9 @@ class Updatesellerorder implements \Magento\Framework\Event\ObserverInterface
                               ->setShipmentAmount($orderShippingAmount)
                               ->setOrderDate($createdAt)
                               ->save();
+        //send email
+        $message = "Invoice has been created for order ".$orderid." and for item sku ".$sku;
+        $this->sender->sendOrderEmail($orderdata,$sellerEmail,$message);
         }
         catch(Exception $e){
          echo $e->getMessage();

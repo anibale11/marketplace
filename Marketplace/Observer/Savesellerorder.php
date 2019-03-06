@@ -68,7 +68,8 @@ class Savesellerorder implements \Magento\Framework\Event\ObserverInterface
                              ->setOrderDate($createdAt)
                              ->save();
        //send email
-       $this->sender->sendOrderEmail($orderdata,$sellerEmail);
+       $message = "You have recived an order with order id ".$orderid." for sku ".$item->getSku();
+       $this->sender->sendOrderEmail($orderdata,$sellerEmail,$message);
        }
        catch(Exception $e){
         echo $e->getMessage();
