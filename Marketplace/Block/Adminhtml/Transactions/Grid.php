@@ -85,93 +85,56 @@ class Grid extends \Magento\Backend\Block\Widget\Grid\Extended
                 'column_css_class' => 'col-id'
             ]
         );
+        $this->addColumn(
+            'transaction_id',
+            [
+                'header' => __('Transaction ID'),
+                'index' => 'transaction_id',
+            ]
+        );
+        
+        $this->addColumn(
+            'transaction_date',
+            [
+                'header' => __('Transaction Date'),
+                'index' => 'transaction_date',
+                'type'      => 'datetime',
+            ]
+        );
+        
+        $this->addColumn(
+            'amount',
+            [
+                'header' => __('Transaction Amount'),
+                'index' => 'amount',
+            ]
+        );  
+        $this->addColumn(
+            'status',
+            [
+                'header' => __('Status'),
+                'index' => 'status',
+                'type' => 'options',
+                'options' => \Magentomaster\Marketplace\Block\Adminhtml\Transactions\Grid::getOptionArray3()
+            ]
+        );      
+        $this->addColumn(
+            'seller_id',
+            [
+                'header' => __('Seller ID'),
+                'index' => 'seller_id',
+            ]
+        );
+        $this->addColumn(
+            'vendor_ack',
+            [
+                'header' => __('Acknowledgement'),
+                'index' => 'vendor_ack',
+            ]
+        );
 
-
-		
-				$this->addColumn(
-					'transaction_id',
-					[
-						'header' => __('Transaction ID'),
-						'index' => 'transaction_id',
-					]
-				);
-				
-				$this->addColumn(
-					'transaction_date',
-					[
-						'header' => __('Transaction Date'),
-						'index' => 'transaction_date',
-						'type'      => 'datetime',
-					]
-				);
-                
-                $this->addColumn(
-					'amount',
-					[
-						'header' => __('Transaction Amount'),
-						'index' => 'amount',
-					]
-				);
-					
-						
-						$this->addColumn(
-							'status',
-							[
-								'header' => __('Status'),
-								'index' => 'status',
-								'type' => 'options',
-								'options' => \Magentomaster\Marketplace\Block\Adminhtml\Transactions\Grid::getOptionArray3()
-							]
-						);
-						
-						
-				$this->addColumn(
-					'seller_id',
-					[
-						'header' => __('Seller ID'),
-						'index' => 'seller_id',
-					]
-				);
-				
-				$this->addColumn(
-					'vendor_ack',
-					[
-						'header' => __('Acknowledgement'),
-						'index' => 'vendor_ack',
-					]
-				);
-				
-
-
-		
-        //$this->addColumn(
-            //'edit',
-            //[
-                //'header' => __('Edit'),
-                //'type' => 'action',
-                //'getter' => 'getId',
-                //'actions' => [
-                    //[
-                        //'caption' => __('Edit'),
-                        //'url' => [
-                            //'base' => '*/*/edit'
-                        //],
-                        //'field' => 'id'
-                    //]
-                //],
-                //'filter' => false,
-                //'sortable' => false,
-                //'index' => 'stores',
-                //'header_css_class' => 'col-action',
-                //'column_css_class' => 'col-action'
-            //]
-        //);
-		
-
-		
-		   $this->addExportType($this->getUrl('marketplace/*/exportCsv', ['_current' => true]),__('CSV'));
-		   $this->addExportType($this->getUrl('marketplace/*/exportExcel', ['_current' => true]),__('Excel XML'));
-
+        $this->addExportType($this->getUrl('marketplace/*/exportCsv', ['_current' => true]),__('CSV'));
+        
         $block = $this->getLayout()->getBlock('grid.bottom.links');
         if ($block) {
             $this->setChild('grid.bottom.links', $block);
@@ -238,31 +201,27 @@ class Grid extends \Magento\Backend\Block\Widget\Grid\Extended
      */
     public function getRowUrl($row)
     {
-		
-        return $this->getUrl(
-            'marketplace/*/edit',
-            ['id' => $row->getId()]
-        );
-		
+		if(!$row->getVendorAck()){
+            return $this->getUrl(
+                'marketplace/*/edit',
+                ['id' => $row->getId()]
+            );
+        }
     }
+    static public function getOptionArray3()
+    {
+        $data_array=array(); 
+        $data_array[0]='Paid';
+        $data_array[1]='Unpaid';
+        return($data_array);
+    }
+    static public function getValueArray3()
+    {
+        $data_array=array();
+        foreach(\Magentomaster\Marketplace\Block\Adminhtml\Transactions\Grid::getOptionArray3() as $k=>$v){
+            $data_array[]=array('value'=>$k,'label'=>$v);		
+        }
+        return($data_array);
 
-	
-		static public function getOptionArray3()
-		{
-            $data_array=array(); 
-			$data_array[0]='Paid';
-			$data_array[1]='Unpaid';
-            return($data_array);
-		}
-		static public function getValueArray3()
-		{
-            $data_array=array();
-			foreach(\Magentomaster\Marketplace\Block\Adminhtml\Transactions\Grid::getOptionArray3() as $k=>$v){
-               $data_array[]=array('value'=>$k,'label'=>$v);		
-			}
-            return($data_array);
-
-		}
-		
-
+    }
 }
