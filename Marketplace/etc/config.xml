@@ -12,6 +12,11 @@
                 <sender>general</sender>
                 <email_template>email_section_order_email_template</email_template>
             </order>
+            <general>
+                <enabled>1</enabled>
+                <sender>general</sender>
+                <email_template>email_section_general_email_template</email_template>
+            </general>
         </email_section>
     </default>
 </config>

@@ -59,7 +59,15 @@ class InstallSchema implements InstallSchemaInterface
                 bank_details varchar(400),
                 store_name varchar(200), 
                 primary key(id))');
-		}
+        }
+        $installer->run('create table vendor_transactions(
+               id int not null auto_increment, 
+               transaction_id varchar(100), 
+               transaction_date DATETIME DEFAULT NOW(),
+               vendor_transactions DECIMAL(32) NOT NULL,
+               status varchar(20), 
+               seller_id int, 
+               vendor_ack int, primary key(id))');
         $installer->endSetup();
     }
 }

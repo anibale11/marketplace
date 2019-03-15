@@ -110,6 +110,48 @@ class Sender extends \Magento\Framework\App\Helper\AbstractHelper
         return $this;
     }
 
+    public function sendGeneralMessage($data,$email,$message)
+    {
+        if(!$this->isEnable()) {
+            return $this;
+        }
+        $email = $data['email']; //set receiver mail
+        $this->inlineTranslation->suspend();
+        $template = $this->scopeConfig->getValue(
+            'email_section/general/email_template',
+            \Magento\Store\Model\ScopeInterface::SCOPE_STORE,
+            $this->getStoreId()
+        );
+        $vars = [
+            'data' => $data,
+            'store' => $this->getStore(),
+            'message'=> $message
+        ];
+        $transport = $this->_transportBuilder->setTemplateIdentifier(
+            $template
+        )->setTemplateOptions(
+            [
+                'area' => \Magento\Framework\App\Area::AREA_FRONTEND,
+                'store' => $this->getStoreId()
+            ]
+        )
+        ->setTemplateVars($vars)
+        ->setFrom(
+            $_sender = $this->scopeConfig->getValue(
+                'email_section/sendmail/sender',
+                \Magento\Store\Model\ScopeInterface::SCOPE_STORE,
+                $this->getStoreId()
+            )
+        )->addTo(
+            $email
+        )
+        //->addBcc(['receiver1@example.com','receiver2@example.com'])
+        ->getTransport();
+        $transport->sendMessage();
+        $this->inlineTranslation->resume();
+        return $this;
+    }
+
 
     /**
      * Check Email service is enable or not

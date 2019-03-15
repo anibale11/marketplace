@@ -1,3 +1,8 @@
-<?php  echo "<h1>".$block->getVendor()['store_name']."</h1>";
-$block->getVendor(); ?>
+<?php 
+//vendor profile information
+?>
+<?php  echo "<img width='200' src='http://localhost/magento23/pub/media/seller/".$block->getVendor()->getData('vendor_logo')."'>";?>
+<?php  echo "<h1>".$block->getVendor()->getData('store_name')."</h1>";?>
+<?php echo "<h4>Since: ".$block->getVendor()->getData('created_date')."<h4>"; ?>
+<?php echo "<h4>Email: ".$block->getVendor()->getData('email')."<h4>"; ?>
 <?php $block->getProductCollection(); ?>

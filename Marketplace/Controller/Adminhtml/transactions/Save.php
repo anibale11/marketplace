@@ -1,21 +1,22 @@
 <?php
-namespace Magentomaster\Marketplace\Controller\Adminhtml\vendors;
+namespace Magentomaster\Marketplace\Controller\Adminhtml\transactions;
 
 use Magento\Backend\App\Action;
+use Magentomaster\Marketplace\Model\VendordetailsFactory;
 use Magento\Framework\App\Filesystem\DirectoryList;
-use Magentomaster\Marketplace\Helper\Sender;
 
 
 class Save extends \Magento\Backend\App\Action
 {
-    protected $sender;
 
     /**
      * @param Action\Context $context
      */
-    public function __construct(Action\Context $context, Sender $sender)
+    protected $vendordetails;
+
+    public function __construct(VendordetailsFactory $vendordetails, Action\Context $context)
     {
-        $this->sender = $sender;
+        $this->vendorDetails = $vendordetails;
         parent::__construct($context);
     }
 
@@ -27,30 +28,28 @@ class Save extends \Magento\Backend\App\Action
     public function execute()
     {
         $data = $this->getRequest()->getPostValue();
-        $email = $data['email'];
-        $message = "";
+        $vendordetails = $this->vendorDetails->create()->getCollection()->addFieldToFilter('seller_id',$data['seller_id']);
+        foreach($vendordetails as $vendordetails){
+            $totaLremaining = ($vendordetails->getTotalRemaining()) - ($data['amount']);
+            $this->vendorDetails->create()->load($vendordetails->getId())->setTotalPaid($data['amount'])->setTotalRemaining($totaLremaining)->save();
+        }
         /** @var \Magento\Backend\Model\View\Result\Redirect $resultRedirect */
         $resultRedirect = $this->resultRedirectFactory->create();
         if ($data) {
-            $model = $this->_objectManager->create('Magentomaster\Marketplace\Model\Vendors');
+            $model = $this->_objectManager->create('Magentomaster\Marketplace\Model\Transactions');
 
             $id = $this->getRequest()->getParam('id');
             if ($id) {
                 $model->load($id);
                 $model->setCreatedAt(date('Y-m-d H:i:s'));
-                //code is added here for password
-                if(!$model->getPassword() && $data['status'] == 1){
-                    $data['password'] = md5($data['phoneno']);
-                    $password = $data['phoneno'];
-                    $message = "Your account has been approved and your password for login is ".$password;
-                    $this->sender->sendGeneralMessage($data,$email,$message);
-                }
             }
+			
+			
             $model->setData($data);
 
             try {
                 $model->save();
-                $this->messageManager->addSuccess(__('The Vendors has been saved.'));
+                $this->messageManager->addSuccess(__('The Transactions has been saved.'));
                 $this->_objectManager->get('Magento\Backend\Model\Session')->setFormData(false);
                 if ($this->getRequest()->getParam('back')) {
                     return $resultRedirect->setPath('*/*/edit', ['id' => $model->getId(), '_current' => true]);
@@ -61,7 +60,7 @@ class Save extends \Magento\Backend\App\Action
             } catch (\RuntimeException $e) {
                 $this->messageManager->addError($e->getMessage());
             } catch (\Exception $e) {
-                $this->messageManager->addException($e, __('Something went wrong while saving the Vendors.'));
+                $this->messageManager->addException($e, __('Something went wrong while saving the Transactions.'));
             }
 
             $this->_getSession()->setFormData($data);

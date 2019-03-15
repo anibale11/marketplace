@@ -2,7 +2,6 @@
 
 namespace Magentomaster\Marketplace\Controller\Index;
 
-use Magentomaster\Marketplace\Model\VendorsFactory;
 use Magento\Framework\Controller\ResultFactory;
 use Magentomaster\Marketplace\Helper\Sender;
 
@@ -29,6 +28,13 @@ class Post extends \Magento\Framework\App\Action\Action
     public function execute()
     {
       $post1 = $this->getRequest()->getPostValue();
+      if(isset($post1['email'])){
+         $result = $this->vendorModel->create()->getCollection()->addFieldToFilter('email',$post1['email']);
+        if(!empty($result->getData())){
+          $this->_messageManager->addError(__("You are already registered. Please login or contact customer support."));
+          return $this->resultRedirectFactory->create()->setPath('marketplace/index/index');
+        }
+      }
       try{
         if(!empty($post1)){
           $this->vendorModel->create()->setData($post1)->save();

@@ -5,6 +5,7 @@
 		<add id="Magentomaster_Marketplace::orderitems" title="Order items reports" module="Magentomaster_Marketplace" sortOrder="20" parent="Magentomaster_Marketplace::parent" action="marketplace/orderitems" resource="Magentomaster_Marketplace::orderitems"/>
         <add id="Magentomaster_Marketplace::vendordetails" title="Seller total reports" module="Magentomaster_Marketplace" sortOrder="30" parent="Magentomaster_Marketplace::parent" action="marketplace/vendordetails" resource="Magentomaster_Marketplace::vendordetails"/>
         <add id="Magentomaster_Marketplace::settings" title="Settings" module="Magentomaster_Marketplace" sortOrder="40" parent="Magentomaster_Marketplace::parent" action="adminhtml/system_config/edit/section/marketplace" resource="Magentomaster_Marketplace::settings" />
-<add id="Magentomaster_Marketplace::vendors" title="Manage Vendors" module="Magentomaster_Marketplace" sortOrder="0" parent="Magentomaster_Marketplace::parent" action="marketplace/vendors" resource="Magentomaster_Marketplace::vendors"/>
+	<add id="Magentomaster_Marketplace::vendors" title="Manage Vendors" module="Magentomaster_Marketplace" sortOrder="0" parent="Magentomaster_Marketplace::parent" action="marketplace/vendors" resource="Magentomaster_Marketplace::vendors"/>
+	<add id="Magentomaster_Marketplace::transactions" title="Marketplace Transactions" module="Magentomaster_Marketplace" sortOrder="20" parent="Magentomaster_Marketplace::parent" action="marketplace/transactions" resource="Magentomaster_Marketplace::transactions"/>
     </menu>
 </config>
