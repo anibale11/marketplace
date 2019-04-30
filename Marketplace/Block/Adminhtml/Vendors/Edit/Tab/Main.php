@@ -133,7 +133,8 @@ class Main extends \Magento\Backend\Block\Widget\Form\Generic implements \Magent
                 'name' => 'email',
                 'label' => __('Email'),
                 'title' => __('Email'),
-				'required' => true,
+                'required' => true,
+                'class' => 'validate-email',
                 'disabled' => $isElementDisabled
             ]
         );
@@ -144,7 +145,8 @@ class Main extends \Magento\Backend\Block\Widget\Form\Generic implements \Magent
                 'name' => 'phoneno',
                 'label' => __('Phone no'),
                 'title' => __('Phone no'),
-				'required' => true,
+                'required' => true,
+                'class' => 'integer',
                 'disabled' => $isElementDisabled
             ]
         );
@@ -156,7 +158,8 @@ class Main extends \Magento\Backend\Block\Widget\Form\Generic implements \Magent
                 'name' => 'pincode',
                 'label' => __('Pincode'),
                 'title' => __('Pincode'),
-				'required' => true,
+                'required' => true,
+                'class' => 'integer',
                 'disabled' => $isElementDisabled
             ]
         );
@@ -180,7 +183,7 @@ class Main extends \Magento\Backend\Block\Widget\Form\Generic implements \Magent
                 'name' => 'comission',
                 'label' => __('Vendor Commission'),
                 'title' => __('Vendor Commission'),
-				
+				'class' => 'integer',
                 'disabled' => $isElementDisabled
             ]
         );
@@ -204,7 +207,7 @@ class Main extends \Magento\Backend\Block\Widget\Form\Generic implements \Magent
                 'name' => 'bank_details',
                 'label' => __('Bank details'),
                 'title' => __('Bank details'),
-				
+				'class' => 'url2',
                 'disabled' => $isElementDisabled
             ]
         );

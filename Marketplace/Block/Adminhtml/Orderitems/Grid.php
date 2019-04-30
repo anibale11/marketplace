@@ -113,7 +113,8 @@ class Grid extends \Magento\Backend\Block\Widget\Grid\Extended
 					'amount',
 					[
 						'header' => __('Product Amount '),
-						'index' => 'amount',
+                        'index' => 'amount',
+                        'type' => 'decimal',
 					]
 				);
                 
@@ -129,7 +130,8 @@ class Grid extends \Magento\Backend\Block\Widget\Grid\Extended
 					'commision',
 					[
 						'header' => __('Commission'),
-						'index' => 'commision',
+                        'index' => 'commision',
+                        'type' => 'decimal',
 					]
                 );
                 
@@ -137,7 +139,8 @@ class Grid extends \Magento\Backend\Block\Widget\Grid\Extended
 					'tdr',
 					[
 						'header' => __('TDR'),
-						'index' => 'tdr',
+                        'index' => 'tdr',
+                        'type' => 'decimal',
 					]
                 );
 
@@ -145,7 +148,8 @@ class Grid extends \Magento\Backend\Block\Widget\Grid\Extended
 					'shipment_amount',
 					[
 						'header' => __('Shipment Amount'),
-						'index' => 'shipment_amount',
+                        'index' => 'shipment_amount',
+                        'type' => 'decimal',
 					]
 				);
 				
@@ -161,7 +165,8 @@ class Grid extends \Magento\Backend\Block\Widget\Grid\Extended
 					'order_date',
 					[
 						'header' => __('Order Date'),
-						'index' => 'order_date',
+                        'index' => 'order_date',
+                        'type' => 'datetime',
 					]
 				);
 		   $this->addExportType($this->getUrl('marketplace/*/exportCsv', ['_current' => true]),__('CSV'));

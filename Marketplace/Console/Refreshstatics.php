@@ -119,7 +119,9 @@ class Refreshstatics extends Command
         $ship = array_sum(array_map(function($collection) { 
                     return $collection['shipment_amount']; 
                     }, $collection));
+        $amount = $amount - $com + $tdr - $ship;
         //ends here
+
         //insert and update data of seller
         $vendordata = $this->vendordetails->create()->getCollection()->addFieldToFilter('seller_id',$seller_id);
         if(empty($vendordata->getData())){
@@ -132,6 +134,8 @@ class Refreshstatics extends Command
         }
         else{
             $data = $this->vendorsetdetails->load($vendordata->getData()[0]['id']);
+            $amount = $amount - $data->getTotalPaid();
+            //echo "<pre>"; print_r($amount); die('dead');
             $data->setTotalTdr($tdr)->setTotalCommission($com)->setTotalShipCharges($ship)->setTotalRemaining($amount)->save();
         }
     }

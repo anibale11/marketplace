@@ -121,14 +121,16 @@ class Grid extends \Magento\Backend\Block\Widget\Grid\Extended
 					'phoneno',
 					[
 						'header' => __('Phone No'),
-						'index' => 'phoneno',
+                        'index' => 'phoneno',
+                        'type' => 'number',
 					]
 				);
 				$this->addColumn(
 					'pincode',
 					[
 						'header' => __('Pincode'),
-						'index' => 'pincode',
+                        'index' => 'pincode',
+                        'type' => 'number',
 					]
 				);
 				

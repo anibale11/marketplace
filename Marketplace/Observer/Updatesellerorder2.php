@@ -76,7 +76,7 @@ class Updatesellerorder2 implements \Magento\Framework\Event\ObserverInterface
                                     ->setOrderDate($createdAt)
                                     ->save();
               //send email
-              $message = "A creditmemo has been created with order id ".$$orderid." for item sku ".$product->getSku();
+              $message = "A creditmemo has been created with order id ".$orderid." for item sku ".$product->getSku();
               $this->sender->sendOrderEmail($orderdata,$sellerEmail,$message);
               }
               catch(Exception $e){

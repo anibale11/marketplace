@@ -100,7 +100,8 @@ class Grid extends \Magento\Backend\Block\Widget\Grid\Extended
 					'total_pending',
 					[
 						'header' => __('Total Pending '),
-						'index' => 'total_pending',
+                        'index' => 'total_pending',
+                        'type' => 'decimal',
 					]
 				);
 				
@@ -108,7 +109,8 @@ class Grid extends \Magento\Backend\Block\Widget\Grid\Extended
 					'total_invoice',
 					[
 						'header' => __('Total Invoice'),
-						'index' => 'total_invoice',
+                        'index' => 'total_invoice',
+                        'type' => 'decimal',
 					]
 				);
 				
@@ -116,7 +118,8 @@ class Grid extends \Magento\Backend\Block\Widget\Grid\Extended
 					'total_ship',
 					[
 						'header' => __('Total Ship'),
-						'index' => 'total_ship',
+                        'index' => 'total_ship',
+                        'type' => 'decimal',
 					]
 				);
 				
@@ -124,7 +127,8 @@ class Grid extends \Magento\Backend\Block\Widget\Grid\Extended
 					'total_creditmemo',
 					[
 						'header' => __('Total Refund'),
-						'index' => 'total_creditmemo',
+                        'index' => 'total_creditmemo',
+                        'type' => 'decimal',
 					]
 				);
 				
@@ -132,7 +136,8 @@ class Grid extends \Magento\Backend\Block\Widget\Grid\Extended
 					'total_paid',
 					[
 						'header' => __('Total Paid'),
-						'index' => 'total_paid',
+                        'index' => 'total_paid',
+                        'type' => 'decimal',
 					]
 				);
 				
@@ -140,7 +145,8 @@ class Grid extends \Magento\Backend\Block\Widget\Grid\Extended
 					'total_remaining',
 					[
 						'header' => __('Total Remaining'),
-						'index' => 'total_remaining',
+                        'index' => 'total_remaining',
+                        'type' => 'decimal',
 					]
 				);
 				
@@ -148,7 +154,8 @@ class Grid extends \Magento\Backend\Block\Widget\Grid\Extended
 					'total_tdr',
 					[
 						'header' => __('Total TDR'),
-						'index' => 'total_tdr',
+                        'index' => 'total_tdr',
+                        'type' => 'decimal',
 					]
 				);
 				
@@ -156,7 +163,8 @@ class Grid extends \Magento\Backend\Block\Widget\Grid\Extended
 					'total_commission',
 					[
 						'header' => __('Total Commission'),
-						'index' => 'total_commission',
+                        'index' => 'total_commission',
+                        'type' => 'decimal',
 					]
 				);
 				

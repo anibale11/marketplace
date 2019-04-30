@@ -68,7 +68,8 @@ class Main extends \Magento\Backend\Block\Widget\Form\Generic implements \Magent
                 'name' => 'transaction_id',
                 'label' => __('Transaction ID'),
                 'title' => __('Transaction ID'),
-				'required' => true,
+                'required' => true,
+                'class'=> 'validate-alphanum-with-spaces',
                 'disabled' => $isElementDisabled
             ]
         );
@@ -88,8 +89,8 @@ class Main extends \Magento\Backend\Block\Widget\Form\Generic implements \Magent
                 'name' => 'transaction_date',
                 'label' => __('Transaction Date'),
                 'title' => __('Transaction Date'),
-                    'date_format' => $dateFormat,
-                    //'time_format' => $timeFormat,
+                'date_format' => $dateFormat,
+                'class'=> 'validate-date',   
 				'required' => true,
                 'disabled' => $isElementDisabled
             ]
@@ -102,8 +103,8 @@ class Main extends \Magento\Backend\Block\Widget\Form\Generic implements \Magent
                 'name' => 'amount',
                 'label' => __('Transaction Amount'),
                 'title' => __('Transaction Amount   '),
-                    'date_format' => $dateFormat,
-                    //'time_format' => $timeFormat,
+                'date_format' => $dateFormat,
+                'class' => 'not-negative-amount', 
 				'required' => true,
                 'disabled' => $isElementDisabled
             ]

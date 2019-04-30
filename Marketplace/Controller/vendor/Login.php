@@ -25,11 +25,12 @@ class Login extends \Magento\Framework\App\Action\Action
             if(!empty($records->getData()[0])){
                $_SESSION['email']= $data['email'];
                $_SESSION['islogined'] = 1;
-               return $this->resultRedirectFactory->create()->setPath('seller/login.php');
+               return $this->resultRedirectFactory->create()->setPath('seller');
             }
             else{
                 unset($_SESSION['email']);
                 unset($_SESSION['islogined']);
+                return $this->resultRedirectFactory->create()->setUrl('http://localhost/magento23/seller/login.php?msg=1');
             }
         }
     }

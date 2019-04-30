@@ -16,6 +16,8 @@ class Updatesellerorder1 implements \Magento\Framework\Event\ObserverInterface
   protected $vendororderiteminsert;
   protected $helper;
   protected $sender;
+  public $message;
+  protected $product;
 
   public function __construct(
                               Order $ordermodel,
@@ -32,6 +34,7 @@ class Updatesellerorder1 implements \Magento\Framework\Event\ObserverInterface
     $this->helper = $helper;
     $this->vendororderiteminsert = $vendororderiteminsert;
     $this->sender = $sender;
+    
   }
 
   public function execute(\Magento\Framework\Event\Observer $observer)
@@ -49,6 +52,7 @@ class Updatesellerorder1 implements \Magento\Framework\Event\ObserverInterface
  
      // 
      foreach ($orderItems as $item) {
+      
        $productId = $item->getProductId();
        $productPriceTaxIncluded = $item->getRowTotalInclTax();
        $qty = $item->getQtyOrdered();
@@ -74,13 +78,14 @@ class Updatesellerorder1 implements \Magento\Framework\Event\ObserverInterface
                               ->setOrderDate($createdAt)
                               ->save();
         //send email
-        $message = "A shipment has been created with order id ".$$orderid." for item sku ".$product->getSku();
+        $message = "A shipment has been created with order id ".$orderid." for item sku ".$product->getSku();
         $this->sender->sendOrderEmail($orderdata,$sellerEmail,$message);
         }
         catch(Exception $e){
          echo $e->getMessage();
         }
        }
+      
      }
      //iteration end here 
      return $this;

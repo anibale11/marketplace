@@ -1,0 +1,6 @@
+._has-datepicker + .ui-datepicker-trigger{
+    margin-left: -18.2rem !important;
+}
+.dashboard-advanced-reports{
+    display: none;
+}

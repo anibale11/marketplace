@@ -30,8 +30,10 @@ class Save extends \Magento\Backend\App\Action
         $data = $this->getRequest()->getPostValue();
         $vendordetails = $this->vendorDetails->create()->getCollection()->addFieldToFilter('seller_id',$data['seller_id']);
         foreach($vendordetails as $vendordetails){
+            $alreadypaid = $vendordetails->getTotalPaid();
+            $totalpaid = $alreadypaid + $data['amount'];
             $totaLremaining = ($vendordetails->getTotalRemaining()) - ($data['amount']);
-            $this->vendorDetails->create()->load($vendordetails->getId())->setTotalPaid($data['amount'])->setTotalRemaining($totaLremaining)->save();
+            $this->vendorDetails->create()->load($vendordetails->getId())->setTotalPaid($totalpaid)->setTotalRemaining($totaLremaining)->save();
         }
         /** @var \Magento\Backend\Model\View\Result\Redirect $resultRedirect */
         $resultRedirect = $this->resultRedirectFactory->create();

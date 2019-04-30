@@ -107,6 +107,8 @@ class Grid extends \Magento\Backend\Block\Widget\Grid\Extended
             [
                 'header' => __('Transaction Amount'),
                 'index' => 'amount',
+                'type' => 'decimal',
+                
             ]
         );  
         $this->addColumn(

@@ -44,6 +44,8 @@ class Savesellerorder implements \Magento\Framework\Event\ObserverInterface
 
     // Iterate each item and check if seller is associated and save information following 
     foreach ($orderItems as $item) {
+      $commissionvalue = 0;
+      $tdrvalue = 0; 
       $productId = $item->getProductId();
       $productPriceTaxIncluded = $item->getRowTotalInclTax();
       $qty = $item->getQtyOrdered();
@@ -57,7 +59,7 @@ class Savesellerorder implements \Magento\Framework\Event\ObserverInterface
       if($sellerId){
        try{
        $this->vendororderitem->setSku($item->getSku())
-                             ->setAmount($item->getRowTotalInclTax())
+                             ->setAmount($productPriceTaxIncluded)
                              ->setCommision($commissionvalue)
                              ->setTdr($tdrvalue)
                              ->setQty($qty)
@@ -80,15 +82,15 @@ class Savesellerorder implements \Magento\Framework\Event\ObserverInterface
     return $this;
   }
     protected function getCommision($productPriceTaxIncluded,$qty){
+      $productPriceTaxIncluded = (float)$productPriceTaxIncluded;
+      $qty = (int)$qty;
       $commission = (float)$this->helper->getGeneralConfig('commission');
       $commission = (float)($productPriceTaxIncluded * $qty * $commission)/100;
-      $commission = number_format($commission, 2);
-      return (float)$commission;
+      return $commission;
     }
     protected function getTdr($commissionvalue){
       $tdr = (float)$this->helper->getGeneralConfig('tdr');
       $tdr = (float)($commissionvalue *$tdr)/100;
-      $tdr = number_format($tdr, 2);
-      return (float)$tdr; 
+      return $tdr; 
     }
 }

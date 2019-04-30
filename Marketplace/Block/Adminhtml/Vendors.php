@@ -25,19 +25,10 @@ class Vendors extends \Magento\Backend\Block\Widget\Container
      */
     protected function _prepareLayout()
     {
-
-		
-        $addButtonProps = [
-            'id' => 'add_new',
-            'label' => __('Add New'),
-            'class' => 'add',
-            'button_class' => '',
-            'class_name' => 'Magento\Backend\Block\Widget\Button\SplitButton',
-            'options' => $this->_getAddButtonOptions(),
-        ];
-        $this->buttonList->add('add_new', $addButtonProps);
-		
-
+        $this->addButton(
+            'preview_product',
+            $this->getButtonData()
+        );
         $this->setChild(
             'grid',
             $this->getLayout()->createBlock('Magentomaster\Marketplace\Block\Adminhtml\Vendors\Grid', 'magentomaster.vendors.grid')
@@ -50,15 +41,14 @@ class Vendors extends \Magento\Backend\Block\Widget\Container
      *
      * @return array
      */
-    protected function _getAddButtonOptions()
+    public function getButtonData()
     {
-
-        $splitButtonOptions[] = [
+        return [
             'label' => __('Add New'),
-            'onclick' => "setLocation('" . $this->_getCreateUrl() . "')"
+            'on_click' => sprintf("window.open('%s')", $this->_getCreateUrl()),
+            'class' => 'action-default primary add',
+            'sort_order' => 20
         ];
-
-        return $splitButtonOptions;
     }
 
     /**
